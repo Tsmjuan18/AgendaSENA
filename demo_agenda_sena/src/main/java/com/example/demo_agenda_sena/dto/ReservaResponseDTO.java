@@ -1,6 +1,5 @@
 package com.example.demo_agenda_sena.dto;
 
-public class ReservaDTO {
-
+public class ReservaResponseDTO {
     
 }
