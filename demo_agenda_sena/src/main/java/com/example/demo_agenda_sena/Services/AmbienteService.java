@@ -1,12 +1,12 @@
-package com.example.demo_agenda_sena.Services;
+package com.example.demo_agenda_sena.services;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo_agenda_sena.Entitys.Ambiente;
-import com.example.demo_agenda_sena.Repository.AmbienteRepository;
+import com.example.demo_agenda_sena.entitys.Ambiente;
+import com.example.demo_agenda_sena.repository.AmbienteRepository;
 
 @Service
 public class AmbienteService {

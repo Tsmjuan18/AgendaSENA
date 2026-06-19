@@ -1,14 +1,14 @@
-package com.example.demo_agenda_sena.Repository;
+package com.example.demo_agenda_sena.repository;
 
+import com.example.demo_agenda_sena.entitys.Ambiente;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-import com.example.demo_agenda_sena.Entitys.Ambiente;
+import java.util.List;
 
-@Repository
-public interface AmbienteRepository extends JpaRepository<Ambiente,Long>{    
-} 
+public interface AmbienteRepository extends JpaRepository<Ambiente, Long> {
 
+    List<Ambiente> findByActivoTrue();
+}
 
     
 

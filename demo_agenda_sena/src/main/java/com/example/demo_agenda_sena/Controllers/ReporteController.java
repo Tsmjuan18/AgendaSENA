@@ -1,4 +1,4 @@
-package com.example.demo_agenda_sena.Controllers;
+package com.example.demo_agenda_sena.controllers;
 
 public class ReporteController {
     
