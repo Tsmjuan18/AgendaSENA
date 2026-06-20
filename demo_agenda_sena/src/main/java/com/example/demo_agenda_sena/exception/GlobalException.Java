@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalException {
 
     @ExceptionHandler(ReglaNegocioException.class)
     public ResponseEntity<Map<String, Object>> manejarReglaNegocio(ReglaNegocioException e) {
