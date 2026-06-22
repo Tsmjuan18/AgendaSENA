@@ -1,0 +1,25 @@
+info:
+  name: LimiteReservaUno
+  type: http
+
+http:
+  method: POST
+  url: http://localhost:8080/api/reservas
+  body:
+    type: json
+    data: |+
+      {
+        "ambienteId": 2,
+        "nombreInstructor": "Carlos Pérez",
+        "fechaInicio": "2026-06-25T11:00:00",
+        "fechaFin": "2026-06-25T12:00:00",
+        "numeroAprendices": 10
+      }
+
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

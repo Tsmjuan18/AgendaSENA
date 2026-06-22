@@ -1,0 +1,25 @@
+info:
+  name: CruceHorario
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/api/reservas
+  body:
+    type: json
+    data: |-
+      {
+        "ambienteId": 1,
+        "nombreInstructor": "Otro Instructor",
+        "fechaInicio": "2026-06-24T09:00:00",
+        "fechaFin": "2026-06-24T11:00:00",
+        "numeroAprendices": 10
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

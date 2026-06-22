@@ -1,0 +1,24 @@
+info:
+  name: FueraDeHorario
+  type: http
+
+http:
+  method: POST
+  url: http://localhost:8080/api/reservas
+  body:
+    type: json
+    data: |-
+      {
+        "ambienteId": 2,
+        "nombreInstructor": "Instructor X",
+        "fechaInicio": "2026-06-24T23:00:00",
+        "fechaFin": "2026-06-25T01:00:00",
+        "numeroAprendices": 10
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

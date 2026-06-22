@@ -1,0 +1,24 @@
+info:
+  name: CapacidadExcedida
+  type: http
+
+http:
+  method: POST
+  url: http://localhost:8080/api/reservas
+  body:
+    type: json
+    data: |-
+      {
+        "ambienteId": 1,
+        "nombreInstructor": "Instructor X",
+        "fechaInicio": "2026-06-24T20:00:00",
+        "fechaFin": "2026-06-24T21:00:00",
+        "numeroAprendices": 999
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
