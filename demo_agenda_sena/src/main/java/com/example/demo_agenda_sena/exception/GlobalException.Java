@@ -23,7 +23,7 @@ public class GlobalException {
         return ResponseEntity.status(e.getStatus()).body(cuerpo);
     }
 
-    // ✅ NUEVO: captura cuando el método HTTP no es el correcto (GET en vez de POST, etc.)
+    // NUEVO: captura cuando el método HTTP no es el correcto (GET en vez de POST, etc.)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<Map<String, Object>> manejarMetodoNoSoportado(
             HttpRequestMethodNotSupportedException e) {

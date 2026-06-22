@@ -24,16 +24,15 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // ===== 1. CREAR AMBIENTES DE PRUEBA (al menos 4) =====
-        
-        Ambiente aula101 = new Ambiente("Aula 101", TipoAmbiente.SALA, 30, true);
-        Ambiente aula102 = new Ambiente("Aula 102", TipoAmbiente.SALA, 25, true);
-        Ambiente laboratorioRedes = new Ambiente("Laboratorio de Redes", TipoAmbiente.LABORATORIO, 20, true);
-        Ambiente auditorioPrincipal = new Ambiente("Auditorio Principal", TipoAmbiente.AUDITORIO, 100, true);
-        Ambiente aulaInactiva = new Ambiente("Aula 103 (Inactiva)", TipoAmbiente.SALA, 15, false);
+
+        // ===== AMBIENTES =====
+        Ambiente aula101               = new Ambiente("Aula 101",                    TipoAmbiente.SALA,        30,  true);
+        Ambiente aula102               = new Ambiente("Aula 102",                    TipoAmbiente.SALA,        25,  true);
+        Ambiente laboratorioRedes      = new Ambiente("Laboratorio de Redes",        TipoAmbiente.LABORATORIO, 20,  true);
+        Ambiente auditorioPrincipal    = new Ambiente("Auditorio Principal",         TipoAmbiente.AUDITORIO,   100, true);
+        Ambiente aulaInactiva          = new Ambiente("Aula 103 (Inactiva)",         TipoAmbiente.SALA,        15,  false);
         Ambiente laboratorioProgramacion = new Ambiente("Laboratorio de Programación", TipoAmbiente.LABORATORIO, 25, true);
 
-        // Guardar ambientes
         ambienteRepository.save(aula101);
         ambienteRepository.save(aula102);
         ambienteRepository.save(laboratorioRedes);
@@ -41,73 +40,80 @@ public class DataLoader implements CommandLineRunner {
         ambienteRepository.save(aulaInactiva);
         ambienteRepository.save(laboratorioProgramacion);
 
-        System.out.println("✅ Ambientes de prueba creados: " + ambienteRepository.count());
+        System.out.println("Ambientes creados: " + ambienteRepository.count());
 
-        // ===== 2. CREAR RESERVAS DE PRUEBA =====
-        
-        LocalDateTime ahora = LocalDateTime.now();
-        
-        // Reserva 1: Aula 101 - Hoy 9:00 a 11:00 (ACTIVA)
+        // ===== FECHAS FIJAS =====
+        // Martes 23 → reserva FINALIZADA (pasado) → para el reporte de ocupación
+        // Jueves 25 → reservas ACTIVAS          → para las pruebas en vivo el miércoles
+        // Viernes 26 → reserva ACTIVA extra      → para probar disponibilidad
+
+        // ----- MARTES 23 (ayer de la presentación) -----
+        LocalDateTime martes8  = LocalDateTime.of(2026, 6, 23, 8,  0, 0);
+        LocalDateTime martes10 = LocalDateTime.of(2026, 6, 23, 10, 0, 0);
+
+        // ----- JUEVES 25 (día siguiente a la presentación) -----
+        LocalDateTime jueves8  = LocalDateTime.of(2026, 6, 25, 8,  0, 0);
+        LocalDateTime jueves10 = LocalDateTime.of(2026, 6, 25, 10, 0, 0);
+        LocalDateTime jueves10b= LocalDateTime.of(2026, 6, 25, 10, 0, 0);
+        LocalDateTime jueves12 = LocalDateTime.of(2026, 6, 25, 12, 0, 0);
+        LocalDateTime jueves14 = LocalDateTime.of(2026, 6, 25, 14, 0, 0);
+        LocalDateTime jueves16 = LocalDateTime.of(2026, 6, 25, 16, 0, 0);
+        LocalDateTime jueves16b= LocalDateTime.of(2026, 6, 25, 16, 0, 0);
+        LocalDateTime jueves18 = LocalDateTime.of(2026, 6, 25, 18, 0, 0);
+
+        // ----- VIERNES 26 -----
+        LocalDateTime viernes13 = LocalDateTime.of(2026, 6, 26, 13, 0, 0);
+        LocalDateTime viernes15 = LocalDateTime.of(2026, 6, 26, 15, 0, 0);
+
+        // ===== RESERVAS =====
+
+        // Reserva 1  CLAVE PARA SOLAPAMIENTO
+        // Aula 101 — jueves 8:00 a 10:00 — ACTIVA
+        // El profesor pedirá intentar crear una reserva de 9:00 a 11:00 aquí → debe rechazarse
         Reserva reserva1 = new Reserva(
-                aula101,
-                "Carlos Pérez",
-                ahora.withHour(9).withMinute(0),
-                ahora.withHour(11).withMinute(0),
-                20,
-                EstadoReserva.ACTIVA
-        );
+                aula101, "Carlos Pérez",
+                jueves8, jueves10,
+                20, EstadoReserva.ACTIVA);
 
-        // Reserva 2: Laboratorio de Redes - Hoy 14:00 a 16:00 (ACTIVA)
+        // Reserva 2
+        // Lab. Redes — jueves 14:00 a 16:00 — ACTIVA
         Reserva reserva2 = new Reserva(
-                laboratorioRedes,
-                "María Gómez",
-                ahora.withHour(14).withMinute(0),
-                ahora.withHour(16).withMinute(0),
-                15,
-                EstadoReserva.ACTIVA
-        );
+                laboratorioRedes, "María Gómez",
+                jueves14, jueves16,
+                15, EstadoReserva.ACTIVA);
 
-        // Reserva 3: Aula 102 - Hoy 10:00 a 12:00 (CANCELADA)
+        // Reserva 3
+        // Aula 102 — jueves 10:00 a 12:00 — CANCELADA
+        // Demuestra que una reserva cancelada NO bloquea el horario
+        // (se puede crear otra reserva en ese mismo horario)
         Reserva reserva3 = new Reserva(
-                aula102,
-                "Juan Rodríguez",
-                ahora.withHour(10).withMinute(0),
-                ahora.withHour(12).withMinute(0),
-                10,
-                EstadoReserva.CANCELADA
-        );
+                aula102, "Juan Rodríguez",
+                jueves10b, jueves12,
+                10, EstadoReserva.CANCELADA);
 
-        // Reserva 4: Auditorio - Ayer 8:00 a 10:00 (FINALIZADA)
+        // Reserva 4
+        // Auditorio — MARTES 8:00 a 10:00 — FINALIZADA
+        // Para demostrar el reporte de ocupación con fecha=2026-06-23
         Reserva reserva4 = new Reserva(
-                auditorioPrincipal,
-                "Ana Martínez",
-                ahora.withHour(8).withMinute(0).minusDays(1),
-                ahora.withHour(10).withMinute(0).minusDays(1),
-                50,
-                EstadoReserva.FINALIZADA
-        );
+                auditorioPrincipal, "Ana Martínez",
+                martes8, martes10,
+                50, EstadoReserva.FINALIZADA);
 
-        // Reserva 5: Aula 101 - Mañana 13:00 a 15:00 (ACTIVA)
+        // Reserva 5
+        // Aula 101 — viernes 13:00 a 15:00 — ACTIVA
+        // Para demostrar disponibilidad en otro día
         Reserva reserva5 = new Reserva(
-                aula101,
-                "Pedro Sánchez",
-                ahora.withHour(13).withMinute(0).plusDays(1),
-                ahora.withHour(15).withMinute(0).plusDays(1),
-                25,
-                EstadoReserva.ACTIVA
-        );
+                aula101, "Pedro Sánchez",
+                viernes13, viernes15,
+                25, EstadoReserva.ACTIVA);
 
-        // Reserva 6: Laboratorio de Programación - Hoy 16:00 a 18:00 (ACTIVA)
+        // Reserva 6
+        // Lab. Programación — jueves 16:00 a 18:00 — ACTIVA
         Reserva reserva6 = new Reserva(
-                laboratorioProgramacion,
-                "Laura Fernández",
-                ahora.withHour(16).withMinute(0),
-                ahora.withHour(18).withMinute(0),
-                18,
-                EstadoReserva.ACTIVA
-        );
+                laboratorioProgramacion, "Laura Fernández",
+                jueves16b, jueves18,
+                18, EstadoReserva.ACTIVA);
 
-        // Guardar reservas
         reservaRepository.save(reserva1);
         reservaRepository.save(reserva2);
         reservaRepository.save(reserva3);
@@ -115,7 +121,7 @@ public class DataLoader implements CommandLineRunner {
         reservaRepository.save(reserva5);
         reservaRepository.save(reserva6);
 
-        System.out.println("Reservas de prueba creadas: " + reservaRepository.count());
-        System.out.println("Datos de carga completados exitosamente!");
+        System.out.println(" Reservas creadas: " + reservaRepository.count());
+        System.out.println(" Datos listos para la sustentación del miércoles 25/06/2026!");
     }
 }
