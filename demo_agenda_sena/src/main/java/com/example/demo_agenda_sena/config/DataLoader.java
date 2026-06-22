@@ -115,7 +115,7 @@ public class DataLoader implements CommandLineRunner {
         reservaRepository.save(reserva5);
         reservaRepository.save(reserva6);
 
-        System.out.println("✅ Reservas de prueba creadas: " + reservaRepository.count());
-        System.out.println("📊 Datos de carga completados exitosamente!");
+        System.out.println("Reservas de prueba creadas: " + reservaRepository.count());
+        System.out.println("Datos de carga completados exitosamente!");
     }
 }

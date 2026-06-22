@@ -35,7 +35,7 @@ public class ReservaService {
 
     @Transactional
     public Reserva crearReserva(Long ambienteId, String nombreInstructor, LocalDateTime fechaInicio,
-                                 LocalDateTime fechaFin, Integer numeroAprendices) {
+            LocalDateTime fechaFin, Integer numeroAprendices) {
 
         Ambiente ambiente = ambienteRepository.findById(ambienteId)
                 .orElseThrow(() -> new ReglaNegocioException(
@@ -106,7 +106,9 @@ public class ReservaService {
         LocalTime horaInicio = inicio.toLocalTime();
         LocalTime horaFin = fin.toLocalTime();
 
-        boolean inicioValido = !horaInicio.isBefore(HORA_APERTURA) && !horaInicio.isAfter(HORA_CIERRE);
+        // inicio: desde las 06:00 (inclusive) hasta antes de las 22:00 (exclusivo)
+        boolean inicioValido = !horaInicio.isBefore(HORA_APERTURA) && horaInicio.isBefore(HORA_CIERRE);
+        // fin: desde las 06:00 (inclusive) hasta las 22:00 (inclusive)
         boolean finValido = !horaFin.isBefore(HORA_APERTURA) && !horaFin.isAfter(HORA_CIERRE);
 
         if (!inicioValido || !finValido) {

@@ -2,6 +2,7 @@ package com.example.demo_agenda_sena.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -20,6 +21,19 @@ public class GlobalException {
                 "timestamp", LocalDateTime.now().toString()
         );
         return ResponseEntity.status(e.getStatus()).body(cuerpo);
+    }
+
+    // ✅ NUEVO: captura cuando el método HTTP no es el correcto (GET en vez de POST, etc.)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<Map<String, Object>> manejarMetodoNoSoportado(
+            HttpRequestMethodNotSupportedException e) {
+        Map<String, Object> cuerpo = Map.of(
+                "error", "Method Not Allowed",
+                "mensaje", "El método '" + e.getMethod() + "' no está permitido en esta ruta",
+                "status", HttpStatus.METHOD_NOT_ALLOWED.value(),
+                "timestamp", LocalDateTime.now().toString()
+        );
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(cuerpo);
     }
 
     /**
