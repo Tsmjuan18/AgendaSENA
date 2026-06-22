@@ -65,6 +65,7 @@ public class AmbienteService {
         return ambienteRepository.findByActivoTrue().stream()
                 .filter(a -> !idsOcupados.contains(a.getId()))
                 .collect(Collectors.toList());
+        
     }
 
     // ===== BUSCAR AMBIENTE POR ID ===== (necesario para validaciones)
